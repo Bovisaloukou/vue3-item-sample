@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import ItemCard from './components/ItemCard.vue'
 import { useItem } from './composables/useItem'
 
 const { item, loading, error, fetchItem } = useItem()
@@ -7,6 +8,10 @@ const { item, loading, error, fetchItem } = useItem()
 onMounted(() => {
   void fetchItem(1)
 })
+
+function handleSelect(id: number): void {
+  console.log('Selected item id:', id)
+}
 </script>
 
 <template>
@@ -14,7 +19,7 @@ onMounted(() => {
     <section class="w-full max-w-md">
       <header class="mb-6">
         <h1 class="text-xl font-semibold text-slate-800">Vue 3 + TypeScript sample</h1>
-        <p class="text-sm text-slate-500 mt-1">Typed composable + axios</p>
+        <p class="text-sm text-slate-500 mt-1">Typed composable + axios + Tailwind card</p>
       </header>
 
       <div v-if="loading" class="flex items-center gap-3 text-slate-600">
@@ -29,10 +34,7 @@ onMounted(() => {
         {{ error }}
       </div>
 
-      <pre
-        v-else-if="item"
-        class="bg-white border border-slate-200 rounded-md p-4 text-xs text-slate-700 overflow-auto"
-      >{{ item }}</pre>
+      <ItemCard v-else-if="item" :item="item" @select="handleSelect" />
     </section>
   </main>
 </template>
